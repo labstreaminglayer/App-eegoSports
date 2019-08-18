@@ -1,8 +1,6 @@
 #include "mainwindow.h"
-#include <QtGui/QApplication>
-
-int main(int argc, char *argv[])
-{
+#include <QApplication>
+int main(int argc, char *argv[]) {
 	std::string config_file = "eegoSports_config.cfg";
 	bool link = false;
 
@@ -13,11 +11,8 @@ int main(int argc, char *argv[])
 			link = std::string(argv[k + 1]) == "0" ? false : true;
 			
 	}
-
 	QApplication a(argc, argv);
-	MainWindow w(0, config_file, link);
+	MainWindow w(nullptr, config_file, link);
 	w.show();
-
-
 	return a.exec();
 }
