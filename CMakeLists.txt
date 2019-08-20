@@ -22,7 +22,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE
 	Qt5::Widgets
 	LSL::lsl
-	$<${UNIX}:dl>
+	$<$<BOOL:${UNIX}>:dl>
 )
 target_include_directories(${PROJECT_NAME} PRIVATE eemagine/sdk)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
