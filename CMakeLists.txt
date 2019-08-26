@@ -7,8 +7,7 @@ include(Findliblsl.cmake)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
-
-# find_package(Threads REQUIRED)
+find_package(Boost 1.69 REQUIRED)
 
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE WIN32
 	main.cpp
@@ -21,6 +20,7 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE WIN32
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
 	Qt5::Widgets
+	Boost::boost
 	LSL::lsl
 	$<$<BOOL:${UNIX}>:dl>
 )
@@ -29,7 +29,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 # target_compile_features(${PROJECT_NAME} PRIVATE cxx_auto_type cxx_lambda_init_captures)
 
 installLSLApp(${PROJECT_NAME})
-installLSLAuxFiles(${PROJECT_NAME}
-	${PROJECT_NAME}.cfg
-)
+#installLSLAuxFiles(${PROJECT_NAME}
+#	${PROJECT_NAME}.cfg
+#)
 LSLGenerateCPackConfig()
