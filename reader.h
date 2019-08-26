@@ -1,12 +1,13 @@
 #pragma once
 #include <QObject>
+#include <string>
 
 namespace eemagine { namespace sdk { class amplifier; class stream; }}
 
 class Reader : public QObject {
 	Q_OBJECT
 public:
-	Reader(): stop(false) {}
+	Reader(std::string dllpath): dllpath(std::move(dllpath)) {}
 	virtual ~Reader() override;
 
 	public slots:
@@ -25,6 +26,7 @@ signals:
 private:
 	eemagine::sdk::amplifier* amp;
 	eemagine::sdk::stream* eegStream;
+	std::string dllpath;
 	unsigned int samplingRate;
-	bool stop;
+	bool stop{false};
 };

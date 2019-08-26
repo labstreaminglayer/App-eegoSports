@@ -7,12 +7,13 @@ include(Findliblsl.cmake)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Boost 1.69 REQUIRED)
+find_package(Boost 1.65 REQUIRED)
 
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE WIN32
 	main.cpp
 	mainwindow.cpp
 	mainwindow.h
+	mainwindow.ui
 	reader.h
 	reader.cpp
 	eemagine/sdk/wrapper.cc

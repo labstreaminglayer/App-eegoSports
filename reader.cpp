@@ -22,7 +22,7 @@ void Reader::setParams(int sampling_rate) {
 void Reader::read() {
 	bool ampFound = true;
 	try {
-		factory fact("eego-SDK.dll");
+		factory fact(dllpath);
 		amp = fact.getAmplifier();
 		eegStream = amp->OpenEegStream(samplingRate);
 

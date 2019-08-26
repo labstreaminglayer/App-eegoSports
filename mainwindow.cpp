@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent, const std::string &config_file, const bo
 		save_config(QFileDialog::getSaveFileName(
 			this, "Save Configuration File", "", "Configuration Files (*.cfg)"));
 	});
+	connect(ui->btn_dll, &QPushButton::clicked, [this]() {
+		auto dllpath = QFileDialog::getOpenFileName(this, "Select eego-SDK.dll",
+			QCoreApplication::applicationDirPath(), "SDK dll (eego-SDK.dll)");
+		this->ui->input_dll->setText(dllpath);
+	});
 	connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
 	connect(ui->linkButton, &QPushButton::clicked, this, &MainWindow::link);
 	if(!config_file.empty()) load_config(QString::fromStdString(config_file));
@@ -88,8 +93,10 @@ void MainWindow::link() {
 			QString sr = ui->samplingRate->currentText();
 			int samplingRate = sr.toInt();// boost::lexical_cast<int>(sr);
 			
+			auto dllpath = ui->input_dll->text();
+			if(!QFile::exists(dllpath)) throw std::runtime_error("eego-SDK.dll wasn't found.");
 			thread = new QThread;
-			reader = new Reader();
+			reader = new Reader(dllpath.toStdString());
 
 			reader->setParams(samplingRate);
 
