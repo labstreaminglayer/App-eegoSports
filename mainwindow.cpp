@@ -3,13 +3,11 @@
 #include "reader.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-//#include <boost/algorithm/string.hpp>
 #include <fstream> 
 #include <lsl_cpp.h>
 
-MainWindow::MainWindow(QWidget *parent, const std::string &config_file, const bool linkOnStart) : QMainWindow(parent), ui(new Ui::MainWindow)
-{
-	reader = nullptr;
+MainWindow::MainWindow(QWidget *parent, const std::string &config_file, const bool linkOnStart)
+	: QMainWindow(parent), ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 	connect(ui->actionLoad_Configuration, &QAction::triggered, [this]() {
 		load_config(QFileDialog::getOpenFileName(
@@ -28,12 +26,6 @@ MainWindow::MainWindow(QWidget *parent, const std::string &config_file, const bo
 	connect(ui->linkButton, &QPushButton::clicked, this, &MainWindow::link);
 	if(!config_file.empty()) load_config(QString::fromStdString(config_file));
 	if(linkOnStart) link();
-}
-
-void MainWindow::closeEvent(QCloseEvent *ev) {
-	if (reader != nullptr) {
-		ev->ignore();
-	}
 }
 
 void MainWindow::load_config(const QString &filename) {
@@ -77,6 +69,13 @@ void MainWindow::save_config(const QString &filename) {
 	}
 	catch (std::exception &e) {
 		QMessageBox::critical(this, "Error", (std::string("Could not write to config file: ") += e.what()).c_str(), QMessageBox::Ok);
+	}
+}
+
+void MainWindow::closeEvent(QCloseEvent *ev) {
+	if (reader) {
+		QMessageBox::warning(this, "Recording still running", "Can't quit while recording");
+		ev->ignore();
 	}
 }
 
@@ -142,5 +141,4 @@ void MainWindow::connectionLost() {
 	QMessageBox::critical(this, "Error", (std::string("Error: Amp connection lost")).c_str(), QMessageBox::Ok);
 }
 
-MainWindow::~MainWindow() noexcept {
-}
+MainWindow::~MainWindow() noexcept = default;

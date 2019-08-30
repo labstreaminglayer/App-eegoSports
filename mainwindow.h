@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <memory> //for std::unique_ptr
 #include <string>
 #include <vector>
 
@@ -41,10 +42,9 @@ private:
 	void load_config(const QString &filename);
 	void save_config(const QString &filename);
 
-	Reader *reader;
+	Reader *reader{nullptr};
+	std::unique_ptr<Ui::MainWindow> ui; // window pointer
 	QThread *thread;
-
-	Ui::MainWindow* ui;
 };
 
 #endif // MAINWINDOW_H
